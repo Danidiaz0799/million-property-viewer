@@ -5,6 +5,7 @@ import PropertyList from './components/PropertyList';
 import CreatePropertyModal from './components/CreatePropertyModal';
 import { useProperties } from './hooks/useProperties';
 import { useState, useEffect } from 'react';
+import { buttonStyles, containerStyles, headerStyles } from '@/app/lib/styles';
 
 export default function Home() {
   const { properties, totalCount, isLoading, error, filters, handleSearch, handlePageChange } = useProperties();
@@ -68,12 +69,14 @@ export default function Home() {
           {/* Botón para crear propiedad */}
           <button
             onClick={() => setIsCreatePropertyOpen(true)}
-            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-2xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center space-x-3 mx-auto"
+            className={`${buttonStyles.primary} text-lg mx-auto`}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            <span>Publicar Nueva Propiedad</span>
+            <div className="flex items-center space-x-3">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Publicar Nueva Propiedad</span>
+            </div>
           </button>
         </div>
         
@@ -85,17 +88,19 @@ export default function Home() {
         />
         {totalCount > (filters.pageSize || 10) && (
           <div className="flex justify-center mt-12">
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-6 border border-white/20">
+            <div className={containerStyles.card}>
               <div className="flex items-center space-x-4">
                 <button
-                  className="group flex items-center px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-500 hover:to-indigo-500 text-gray-700 hover:text-white rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
+                  className={buttonStyles.secondary}
                   onClick={() => handlePageChange((filters.page || 1) - 1)}
                   disabled={(filters.page || 1) <= 1}
                 >
-                  <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  Anterior
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Anterior
+                  </div>
                 </button>
                 
                 <div className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
@@ -105,14 +110,16 @@ export default function Home() {
                 </div>
                 
                 <button
-                  className="group flex items-center px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-500 hover:to-indigo-500 text-gray-700 hover:text-white rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
+                  className={buttonStyles.secondary}
                   onClick={() => handlePageChange((filters.page || 1) + 1)}
                   disabled={((filters.page || 1) * (filters.pageSize || 10)) >= totalCount}
                 >
-                  Siguiente
-                  <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  <div className="flex items-center">
+                    <span>Siguiente</span>
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </button>
               </div>
               

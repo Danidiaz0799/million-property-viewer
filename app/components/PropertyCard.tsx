@@ -2,6 +2,7 @@
 
 import { Property } from '../lib/types';
 import Image from 'next/image';
+import { containerStyles, buttonStyles } from '@/app/lib/styles';
 
 interface PropertyCardProps {
   property: Property;
@@ -21,7 +22,7 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
   };
 
   return (
-    <div className="group property-card bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 border border-gray-100 hover:border-blue-200 fade-in-up">
+    <div className={`${containerStyles.card} rounded-2xl hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border-2 hover:border-blue-200`}>
       {/* Imagen */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
         <Image
@@ -29,23 +30,20 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
           alt={`Imagen de ${property.name}`}
           fill={true}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
         
         {/* Badge de imágenes adicionales */}
         {imageUrls && imageUrls.length > 1 && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm">
+          <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg">
             📸 +{imageUrls.length - 1} fotos
           </div>
         )}
 
         {/* Badge de precio destacado */}
-        <div className="absolute top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg backdrop-blur-sm">
+        <div className="absolute top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
           {formatPrice(property.price)}
         </div>
-
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
 
       {/* Content */}
@@ -96,11 +94,11 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
         {/* Botón de acción */}
         <button 
           onClick={() => onViewDetails(property)}
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/30 shadow-lg hover:shadow-xl group-hover:shadow-2xl"
+          className={`${buttonStyles.primary} w-full`}
         >
           <div className="flex items-center justify-center space-x-2">
             <span>Ver Detalles</span>
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </div>

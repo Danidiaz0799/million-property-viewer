@@ -1,49 +1,111 @@
 @import "tailwindcss";
 
+/* Variables globales para el sistema de diseño */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  
+  /* Colores del sistema */
+    --primary-blue: #2563eb;
+    --primary-indigo: #4f46e5;
+    --border-color: #d1d5db;
+    --border-hover: #9ca3af;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-placeholder: #9ca3af;
+  
+    /* Sombras estándar */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+    /* Espaciado estándar */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+  
+    /* Radio de bordes estándar */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Animación shimmer para skeleton loading */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+  font-family: system-ui, -apple-system, sans-serif;
   }
-
-  100% {
-    background-position: 200% 0;
+  
+  /* Estilos base para formularios */
+  .form-input {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    background: white;
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
   }
+  
+  .form-input:hover {
+    border-color: var(--border-hover);
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
 }
 
-/* Clase para el text-clip con soporte de webkit */
-.text-gradient {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6, #4f46e5);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.form-input::placeholder {
+  color: var(--text-placeholder);
 }
 
-/* Clases para mejorar las transiciones */
-.property-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Estilos base para botones */
+.btn-primary {
+  background: linear-gradient(to right, var(--primary-blue), var(--primary-indigo));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow-lg);
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(to right, #1d4ed8, #4338ca);
 }
 
-.property-card:hover {
-  transform: translateY(-8px) scale(1.02);
+.btn-secondary {
+  background: #f3f4f6;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+  border-color: var(--border-hover);
+}
+
+/* Estilos base para contenedores */
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Scrollbar personalizado */
