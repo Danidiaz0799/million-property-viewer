@@ -21,6 +21,21 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    domains: [
+      'i.ytimg.com',
+      'encrypted-tbn0.gstatic.com',
+      'yt3.ggpht.com',
+      'img.youtube.com',
+      'media.istockphoto.com',
+      'images.unsplash.com',
+      'cdn.pixabay.com',
+      'lh3.googleusercontent.com',
+      'static.wikia.nocookie.net',
+      'm.media-amazon.com',
+      's3.amazonaws.com',
+      'res.cloudinary.com',
+      'placehold.co',
+    ],
   },
 }
 

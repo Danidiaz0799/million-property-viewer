@@ -1,5 +1,7 @@
 import { Property } from '../lib/types';
 import PropertyCard from './PropertyCard';
+import { useEffect, useState } from 'react';
+import { fetchPropertyImages } from '../services/images';
 
 interface PropertyListProps {
   properties: Property[];
@@ -37,7 +39,38 @@ function SkeletonCard() {
   );
 }
 
+
 export default function PropertyList({ properties, isLoading, error }: PropertyListProps) {
+  const [propertyImages, setPropertyImages] = useState<Record<string, string[]>>({});
+
+  useEffect(() => {
+    async function loadImages() {
+      if (!Array.isArray(properties)) return;
+      const imagesMap: Record<string, string[]> = {};
+      
+      // Mapeo: 123345 -> IdProperty 1, 123 -> IdProperty 2
+      const codeToIdMap: Record<string, number> = {
+        "123345": 1,
+        "123": 2
+      };
+      
+      await Promise.all(properties.map(async (property) => {
+        try {
+          const propertyId = codeToIdMap[property.codeInternal];
+          if (propertyId) {
+            const images = await fetchPropertyImages(propertyId);
+            if (images && images.length > 0) {
+              imagesMap[property.codeInternal] = images.map(img => img.file);
+            }
+          }
+        } catch (error) {
+          console.error(`Error loading images for property ${property.codeInternal}:`, error);
+        }
+      }));
+      setPropertyImages(imagesMap);
+    }
+    loadImages();
+  }, [properties]);
   // Estado de carga
   if (isLoading) {
     return (
@@ -80,13 +113,7 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
       <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-12 text-center">
         <div className="text-blue-600 text-6xl mb-4">🔍</div>
         <div className="text-blue-700 text-xl font-semibold mb-2">
-          No properties found matching your criteria
-        </div>
-        <div className="text-blue-600 mb-6">
-          Try adjusting your search filters to find more results.
-        </div>
-        <div className="text-sm text-blue-500 bg-blue-100 rounded-lg p-3 inline-block">
-          💡 Tip: Try searching for &ldquo;Luxury&rdquo; or set a broader price range
+          No properties found.
         </div>
       </div>
     );
@@ -99,26 +126,19 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
         <h2 className="text-3xl font-bold text-gray-900">
           {Array.isArray(properties) && properties.length === 0 ? 'No Properties Found' : `Found ${Array.isArray(properties) ? properties.length : 0} ${Array.isArray(properties) && properties.length === 1 ? 'Property' : 'Properties'}`}
         </h2>
-        <div className="text-sm text-gray-700 bg-gray-100 px-3 py-1 rounded-full font-medium">
-          {properties.length === 0 ? 'Try adjusting your filters' : 'Premium real estate collection'}
-        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {properties.map((property) => (
           <PropertyCard
-            key={property.idProperty}
+            key={property.codeInternal + '-' + property.name}
             property={property}
+            imageUrls={propertyImages[property.codeInternal]}
           />
         ))}
       </div>
 
-      {/* Footer info */}
-      <div className="text-center py-8">
-        <p className="text-gray-600">
-          🏡 Showing premium properties from our exclusive collection
-        </p>
-      </div>
+  {/* Footer info */}
     </div>
   );
 }

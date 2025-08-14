@@ -1,36 +1,30 @@
 export interface Property {
-  idProperty: number;
+  _id?: number;
   name: string;
   address: string;
-  price: number;
+  price?: number;
   codeInternal: string;
-  year: number;
+  year?: number;
   idOwner: number;
-  owner?: Owner; // Relación opcional
-  images?: PropertyImage[];
-  traces?: PropertyTrace[];
 }
 
 export interface Owner {
-  idOwner: number;
   name: string;
   address: string;
-  photo: string;
+  photo?: string | null;
   birthday: string;
 }
 
 export interface PropertyImage {
-  idPropertyImage: number;
-  idProperty: number;
+  idProperty?: number;
   file: string;
-  enabled: boolean;
+  enabled?: boolean;
 }
 
 export interface PropertyTrace {
-  idPropertyTrace: number;
   dateSale: string;
   name: string;
-  value: number;
-  tax: number;
+  value?: number;
+  tax?: number;
   idProperty: number;
 }
