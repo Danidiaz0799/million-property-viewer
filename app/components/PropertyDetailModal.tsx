@@ -100,9 +100,10 @@ export default function PropertyDetailModal({
                     {/* Main Image */}
                     <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-lg">
                       <Image
-                        src={currentImage?.file || 'https://via.placeholder.com/800x400?text=No+Image'}
+                        src={currentImage?.file || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80'}
                         alt="Imagen de la propiedad"
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
                         className="object-cover"
                       />
                       
@@ -149,6 +150,7 @@ export default function PropertyDetailModal({
                               src={image.file}
                               alt={`Thumbnail ${index + 1}`}
                               fill
+                              sizes="80px"
                               className="object-cover"
                             />
                           </button>

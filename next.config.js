@@ -26,6 +26,18 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.viacelere.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
     ],
     domains: [
       'i.ytimg.com',
@@ -42,6 +54,7 @@ const nextConfig = {
       'res.cloudinary.com',
       'placehold.co',
       'img.freepik.com',
+      'www.viacelere.com',
     ],
   },
 }
