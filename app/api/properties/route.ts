@@ -66,3 +66,32 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    
+    // Llamar a la API externa para crear la propiedad
+    const response = await fetch('http://localhost:5064/api/Properties', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+
+    const newProperty = await response.json();
+    return NextResponse.json(newProperty);
+
+  } catch (error) {
+    console.error('Error creating property:', error);
+    return NextResponse.json(
+      { error: 'Failed to create property' },
+      { status: 500 }
+    );
+  }
+}

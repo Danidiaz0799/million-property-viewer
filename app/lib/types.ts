@@ -1,5 +1,5 @@
 export interface Property {
-  _id?: number;
+  id?: number;
   name: string;
   address: string;
   price?: number;
@@ -9,7 +9,7 @@ export interface Property {
 }
 
 export interface Owner {
-  _id: number;
+  id: number;
   name: string;
   address: string;
   photo?: string | null;
@@ -17,14 +17,14 @@ export interface Owner {
 }
 
 export interface PropertyImage {
-  _id?: number;
+  id?: number;
   idProperty?: number;
   file: string;
   enabled?: boolean;
 }
 
 export interface PropertyTrace {
-  _id?: number;
+  id?: number;
   dateSale: string;
   name: string;
   value?: number;

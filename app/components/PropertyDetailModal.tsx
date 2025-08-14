@@ -3,21 +3,47 @@
 import { PropertyDetails } from '../lib/types';
 import Image from 'next/image';
 import { useState } from 'react';
+import CreateTransactionModal from './CreateTransactionModal';
+import { fetchPropertyDetails } from '../services/propertyDetails';
 
 interface PropertyDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   propertyDetails: PropertyDetails | null;
   isLoading: boolean;
+  onPropertyDetailsUpdate?: (updatedDetails: PropertyDetails) => void;
 }
 
 export default function PropertyDetailModal({ 
   isOpen, 
   onClose, 
   propertyDetails, 
-  isLoading 
+  isLoading,
+  onPropertyDetailsUpdate
 }: PropertyDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isCreateTransactionOpen, setIsCreateTransactionOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleTransactionCreated = async () => {
+    // Recargar los detalles de la propiedad después de crear una transacción
+    if (propertyDetails?.property.id && onPropertyDetailsUpdate) {
+      setIsRefreshing(true);
+      try {
+        const updatedDetails = await fetchPropertyDetails(
+          propertyDetails.property, 
+          propertyDetails.property.id
+        );
+        onPropertyDetailsUpdate(updatedDetails);
+        console.log('Detalles de la propiedad actualizados exitosamente');
+      } catch (error) {
+        console.error('Error al actualizar los detalles de la propiedad:', error);
+      } finally {
+        setIsRefreshing(false);
+      }
+    }
+    setIsCreateTransactionOpen(false);
+  };
 
   if (!isOpen) return null;
 
@@ -229,7 +255,7 @@ export default function PropertyDetailModal({
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-blue-700 font-semibold">ID:</span>
-                          <span className="font-mono bg-blue-200 px-3 py-1 rounded-lg text-blue-800">{propertyDetails.owner._id}</span>
+                          <span className="font-mono bg-blue-200 px-3 py-1 rounded-lg text-blue-800">{propertyDetails.owner.id}</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-blue-700 font-semibold">Dirección:</span>
@@ -246,12 +272,26 @@ export default function PropertyDetailModal({
 
                 {/* Property Traces */}
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-gray-800 flex items-center">
-                    <svg className="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    Historial de Transacciones
-                  </h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-2xl font-bold text-gray-800 flex items-center">
+                      <svg className="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                      Historial de Transacciones
+                      {isRefreshing && (
+                        <div className="ml-3 animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
+                      )}
+                    </h3>
+                    <button
+                      onClick={() => setIsCreateTransactionOpen(true)}
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-colors font-bold flex items-center space-x-2"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      <span>Nueva Transacción</span>
+                    </button>
+                  </div>
 
                   {propertyDetails.traces.length > 0 ? (
                     <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
@@ -306,6 +346,17 @@ export default function PropertyDetailModal({
           </div>
         </div>
       </div>
+      
+      {/* Modal para crear transacciones */}
+      {propertyDetails && (
+        <CreateTransactionModal
+          isOpen={isCreateTransactionOpen}
+          onClose={() => setIsCreateTransactionOpen(false)}
+          onTransactionCreated={handleTransactionCreated}
+          propertyId={propertyDetails.property.id || 0}
+          propertyName={propertyDetails.property.name}
+        />
+      )}
     </div>
   );
 }

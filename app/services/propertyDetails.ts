@@ -49,7 +49,7 @@ export async function fetchPropertyDetails(property: import('../lib/types').Prop
     return {
       property,
       owner: owner || {
-        _id: property.idOwner,
+        id: property.idOwner,
         name: 'Propietario no encontrado',
         address: 'N/A',
         birthday: 'N/A'

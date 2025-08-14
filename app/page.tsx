@@ -2,10 +2,51 @@
 
 import Filters from './components/Filters';
 import PropertyList from './components/PropertyList';
+import CreatePropertyModal from './components/CreatePropertyModal';
 import { useProperties } from './hooks/useProperties';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const { properties, totalCount, isLoading, error, filters, handleSearch, handlePageChange } = useProperties();
+  const [isCreatePropertyOpen, setIsCreatePropertyOpen] = useState(false);
+    const [owners, setOwners] = useState<Array<{ id: number; name: string; address: string; photo?: string }>>([]);
+
+  // Cargar owners al montar el componente
+  useEffect(() => {
+    const fetchOwners = async () => {
+      try {
+        const response = await fetch('/api/owners');
+        if (response.ok) {
+          const ownersData = await response.json();
+          // Validar que ownersData sea un array y tenga elementos válidos
+          if (Array.isArray(ownersData)) {
+            const validOwners = ownersData.filter(owner => 
+              owner && 
+              typeof owner.id === 'number' &&
+              typeof owner.name === 'string' && 
+              owner.name.trim() !== ''
+            );
+            setOwners(validOwners);
+          } else {
+            console.warn('ownersData no es un array:', ownersData);
+            setOwners([]);
+          }
+        } else {
+          console.error('Error en la respuesta de owners:', response.status);
+          setOwners([]);
+        }
+      } catch (error) {
+        console.error('Error fetching owners:', error);
+        setOwners([]);
+      }
+    };
+    fetchOwners();
+  }, []);
+
+  const handlePropertyCreated = () => {
+    // Recargar las propiedades
+    window.location.reload();
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -20,9 +61,20 @@ export default function Home() {
           <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
             Encuentra tu Hogar Ideal
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
             Descubre propiedades exclusivas en las mejores ubicaciones. Tu nuevo hogar te está esperando.
           </p>
+          
+          {/* Botón para crear propiedad */}
+          <button
+            onClick={() => setIsCreatePropertyOpen(true)}
+            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-2xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center space-x-3 mx-auto"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <span>Publicar Nueva Propiedad</span>
+          </button>
         </div>
         
         <Filters onSearch={handleSearch} />
@@ -177,6 +229,14 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      
+      {/* Modal para crear propiedades */}
+      <CreatePropertyModal
+        isOpen={isCreatePropertyOpen}
+        onClose={() => setIsCreatePropertyOpen(false)}
+        onPropertyCreated={handlePropertyCreated}
+        owners={owners}
+      />
     </main>
   );
 }

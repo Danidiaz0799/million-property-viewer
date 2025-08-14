@@ -76,17 +76,11 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
       if (!Array.isArray(properties)) return;
       const imagesMap: Record<string, string[]> = {};
       
-      // Mapeo: 123345 -> IdProperty 1, 123 -> IdProperty 2
-      const codeToIdMap: Record<string, number> = {
-        "123345": 1,
-        "123": 2
-      };
-      
       await Promise.all(properties.map(async (property) => {
         try {
-          const propertyId = codeToIdMap[property.codeInternal];
-          if (propertyId) {
-            const images = await fetchPropertyImages(propertyId);
+          // Usar el ID real de la propiedad en lugar de mapeo hardcodeado
+          if (property.id) {
+            const images = await fetchPropertyImages(property.id);
             if (images && images.length > 0) {
               imagesMap[property.codeInternal] = images.map(img => img.file);
             }
@@ -106,13 +100,8 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     setSelectedPropertyDetails(null);
 
     try {
-      // Mapeo del código interno al ID de la propiedad
-      const codeToIdMap: Record<string, number> = {
-        "123345": 1,
-        "123": 2
-      };
-      
-      const propertyId = codeToIdMap[property.codeInternal];
+      // Usar el id de la propiedad directamente
+      const propertyId = property.id;
       if (propertyId) {
         const details = await fetchPropertyDetails(property, propertyId);
         setSelectedPropertyDetails(details);
@@ -131,6 +120,10 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     setIsModalOpen(false);
     setSelectedPropertyDetails(null);
     setIsLoadingDetails(false);
+  };
+
+  const handlePropertyDetailsUpdate = (updatedDetails: PropertyDetails) => {
+    setSelectedPropertyDetails(updatedDetails);
   };
   // Estado de carga
   if (isLoading) {
@@ -276,6 +269,7 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
         onClose={closeModal}
         propertyDetails={selectedPropertyDetails}
         isLoading={isLoadingDetails}
+        onPropertyDetailsUpdate={handlePropertyDetailsUpdate}
       />
     </div>
   );
