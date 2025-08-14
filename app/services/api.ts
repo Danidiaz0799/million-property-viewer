@@ -3,31 +3,49 @@ import { Property } from "../lib/types";
 export interface PropertyFilters {
   name?: string;
   address?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  priceMin?: number;
+  priceMax?: number;
+  page?: number;
+  pageSize?: number;
 }
 
-export async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
-  try {
-    const queryParams = new URLSearchParams();
-    
-    // Iterar sobre el objeto filters y añadir solo los valores que no sean nulos o indefinidos
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        queryParams.append(key, value.toString());
-      }
-    });
+const API_BASE_URL = "http://localhost:5064/api";
 
-    const response = await fetch(`/api/properties?${queryParams.toString()}`);
-    
+// Devuelve un objeto con las propiedades esperadas por la API .NET
+function mapFiltersToApiParams(filters: PropertyFilters): Record<string, string> {
+  const params: Record<string, string> = {};
+  if (filters.name) params["name"] = filters.name;
+  if (filters.address) params["address"] = filters.address;
+  if (filters.priceMin !== undefined) params["priceMin"] = filters.priceMin.toString();
+  if (filters.priceMax !== undefined) params["priceMax"] = filters.priceMax.toString();
+  if (filters.page !== undefined) params["page"] = filters.page.toString();
+  if (filters.pageSize !== undefined) params["pageSize"] = filters.pageSize.toString();
+  return params;
+}
+
+// La API devuelve un objeto paginado, por ejemplo: { items: Property[], totalCount: number }
+export async function fetchProperties(filters: PropertyFilters): Promise<{ items: Property[]; totalCount: number }> {
+  try {
+    const params = mapFiltersToApiParams(filters);
+    const queryParams = new URLSearchParams(params);
+    const response = await fetch(`${API_BASE_URL}/properties?${queryParams.toString()}`);
     if (!response.ok) {
       throw new Error('Failed to fetch properties');
     }
-
     const data = await response.json();
-    return data as Property[];
+    // Adaptar a la estructura real del backend
+    if (data && Array.isArray(data.data)) {
+      return {
+        items: data.data,
+        totalCount: data.totalCount ?? data.data.length,
+      };
+    }
+    // fallback
+    if (Array.isArray(data)) {
+      return { items: data, totalCount: data.length };
+    }
+    return { items: [], totalCount: 0 };
   } catch (error) {
-    // Re-lanzar el error para que pueda ser manejado por el componente que llama
     throw error;
   }
 }

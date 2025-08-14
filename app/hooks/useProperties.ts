@@ -4,12 +4,17 @@ import { PropertyFilters, fetchProperties } from "../services/api";
 
 export function useProperties() {
   const [properties, setProperties] = useState<Property[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<PropertyFilters>({});
+  const [filters, setFilters] = useState<PropertyFilters>({ page: 1, pageSize: 10 });
 
   const handleSearch = (newFilters: PropertyFilters) => {
-    setFilters(newFilters);
+    setFilters((prev) => ({ ...prev, ...newFilters, page: 1 })); // Reinicia a la página 1 al buscar
+  };
+
+  const handlePageChange = (page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
   };
 
   useEffect(() => {
@@ -17,23 +22,25 @@ export function useProperties() {
       try {
         setIsLoading(true);
         setError(null);
-        
-        const data = await fetchProperties(filters);
-        setProperties(data);
+        const { items, totalCount } = await fetchProperties(filters);
+        setProperties(items);
+        setTotalCount(totalCount);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred while fetching properties');
       } finally {
         setIsLoading(false);
       }
     };
-
     loadProperties();
   }, [filters]);
 
   return {
     properties,
+    totalCount,
     isLoading,
     error,
-    handleSearch
+    filters,
+    handleSearch,
+    handlePageChange,
   };
 }
