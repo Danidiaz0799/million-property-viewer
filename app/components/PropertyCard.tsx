@@ -6,9 +6,10 @@ import Image from 'next/image';
 interface PropertyCardProps {
   property: Property;
   imageUrls?: string[];
+  onViewDetails: (property: Property) => void;
 }
 
-export default function PropertyCard({ property, imageUrls }: PropertyCardProps) {
+export default function PropertyCard({ property, imageUrls, onViewDetails }: PropertyCardProps) {
   const firstImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : 'https://via.placeholder.com/400x300?text=No+Image';
   const formatPrice = (price?: number) => {
     if (typeof price !== 'number') return '';
@@ -93,7 +94,10 @@ export default function PropertyCard({ property, imageUrls }: PropertyCardProps)
         </div>
 
         {/* Botón de acción */}
-        <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/30 shadow-lg hover:shadow-xl group-hover:shadow-2xl">
+        <button 
+          onClick={() => onViewDetails(property)}
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/30 shadow-lg hover:shadow-xl group-hover:shadow-2xl"
+        >
           <div className="flex items-center justify-center space-x-2">
             <span>Ver Detalles</span>
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

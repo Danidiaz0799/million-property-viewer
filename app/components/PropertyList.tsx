@@ -1,7 +1,10 @@
 import { Property } from '../lib/types';
 import PropertyCard from './PropertyCard';
+import PropertyDetailModal from './PropertyDetailModal';
 import { useEffect, useState } from 'react';
 import { fetchPropertyImages } from '../services/images';
+import { fetchPropertyDetails } from '../services/propertyDetails';
+import type { PropertyDetails } from '../lib/types';
 
 interface PropertyListProps {
   properties: Property[];
@@ -64,6 +67,9 @@ function SkeletonCard() {
 
 export default function PropertyList({ properties, isLoading, error }: PropertyListProps) {
   const [propertyImages, setPropertyImages] = useState<Record<string, string[]>>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPropertyDetails, setSelectedPropertyDetails] = useState<PropertyDetails | null>(null);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
 
   useEffect(() => {
     async function loadImages() {
@@ -93,6 +99,39 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     }
     loadImages();
   }, [properties]);
+
+  const handleViewDetails = async (property: Property) => {
+    setIsModalOpen(true);
+    setIsLoadingDetails(true);
+    setSelectedPropertyDetails(null);
+
+    try {
+      // Mapeo del código interno al ID de la propiedad
+      const codeToIdMap: Record<string, number> = {
+        "123345": 1,
+        "123": 2
+      };
+      
+      const propertyId = codeToIdMap[property.codeInternal];
+      if (propertyId) {
+        const details = await fetchPropertyDetails(property, propertyId);
+        setSelectedPropertyDetails(details);
+      } else {
+        throw new Error('Property ID not found');
+      }
+    } catch (error) {
+      console.error('Error loading property details:', error);
+      setSelectedPropertyDetails(null);
+    } finally {
+      setIsLoadingDetails(false);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPropertyDetails(null);
+    setIsLoadingDetails(false);
+  };
   // Estado de carga
   if (isLoading) {
     return (
@@ -210,6 +249,7 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
             <PropertyCard
               property={property}
               imageUrls={propertyImages[property.codeInternal]}
+              onViewDetails={handleViewDetails}
             />
           </div>
         ))}
@@ -229,6 +269,14 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
           </button>
         </div>
       </div>
+      
+      {/* Modal de detalles */}
+      <PropertyDetailModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        propertyDetails={selectedPropertyDetails}
+        isLoading={isLoadingDetails}
+      />
     </div>
   );
 }

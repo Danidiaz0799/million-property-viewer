@@ -94,3 +94,66 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+/* Estilos para el modal */
+.modal-overlay {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Animación para el modal */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-enter {
+  animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+/* Mejora para la tabla responsive */
+@media (max-width: 768px) {
+  .traces-table {
+    font-size: 0.875rem;
+  }
+
+  .traces-table th,
+  .traces-table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* Estilos para la galería de imágenes */
+.image-gallery {
+  scroll-behavior: smooth;
+}
+
+.image-gallery::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-gallery::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.image-gallery::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  border-radius: 3px;
+}
+
+/* Efecto hover para las tarjetas de información */
+.info-card {
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}

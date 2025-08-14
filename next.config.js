@@ -20,6 +20,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.freepik.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     domains: [
       'i.ytimg.com',
@@ -35,6 +41,7 @@ const nextConfig = {
       's3.amazonaws.com',
       'res.cloudinary.com',
       'placehold.co',
+      'img.freepik.com',
     ],
   },
 }
