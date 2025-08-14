@@ -11,7 +11,6 @@ export interface PropertyFilters {
 
 const API_BASE_URL = "http://localhost:5064/api";
 
-// Devuelve un objeto con las propiedades esperadas por la API .NET
 function mapFiltersToApiParams(filters: PropertyFilters): Record<string, string> {
   const params: Record<string, string> = {};
   if (filters.name) params["name"] = filters.name;
@@ -23,7 +22,6 @@ function mapFiltersToApiParams(filters: PropertyFilters): Record<string, string>
   return params;
 }
 
-// La API devuelve un objeto paginado, por ejemplo: { items: Property[], totalCount: number }
 export async function fetchProperties(filters: PropertyFilters): Promise<{ items: Property[]; totalCount: number }> {
   try {
     const params = mapFiltersToApiParams(filters);
@@ -33,14 +31,12 @@ export async function fetchProperties(filters: PropertyFilters): Promise<{ items
       throw new Error('Failed to fetch properties');
     }
     const data = await response.json();
-    // Adaptar a la estructura real del backend
     if (data && Array.isArray(data.data)) {
       return {
         items: data.data,
         totalCount: data.totalCount ?? data.data.length,
       };
     }
-    // fallback
     if (Array.isArray(data)) {
       return { items: data, totalCount: data.length };
     }

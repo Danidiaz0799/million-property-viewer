@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
-    // Obtener parámetros reales que acepta la API
     const page = searchParams.get('page') || '1';
     const pageSize = searchParams.get('pageSize') || '10';
     const name = searchParams.get('name') || '';
@@ -14,11 +12,10 @@ export async function GET(request: NextRequest) {
     const sortField = searchParams.get('sortField') || '';
     const sortDescending = searchParams.get('sortDescending') || 'false';
 
-    // Construir URL para la API externa con parámetros reales
     const apiUrl = new URL('http://localhost:5064/api/Properties');
     apiUrl.searchParams.set('page', page);
     apiUrl.searchParams.set('pageSize', pageSize);
-    
+
     if (name) apiUrl.searchParams.set('name', name);
     if (address) apiUrl.searchParams.set('address', address);
     if (priceMin) apiUrl.searchParams.set('priceMin', priceMin);
@@ -26,7 +23,6 @@ export async function GET(request: NextRequest) {
     if (sortField) apiUrl.searchParams.set('sortField', sortField);
     apiUrl.searchParams.set('sortDescending', sortDescending);
 
-    // Llamar a la API externa
     const response = await fetch(apiUrl.toString(), {
       method: 'GET',
       headers: {
@@ -39,8 +35,6 @@ export async function GET(request: NextRequest) {
     }
 
     const apiData = await response.json();
-    
-    // La API externa devuelve { data, totalCount, page, pageSize }
     const { data: properties, totalCount } = apiData;
 
     return NextResponse.json({
@@ -54,7 +48,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error fetching properties:', error);
     return NextResponse.json(
-      { 
+      {
         error: 'Failed to fetch properties',
         properties: [],
         totalCount: 0,
@@ -70,8 +64,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    // Llamar a la API externa para crear la propiedad
     const response = await fetch('http://localhost:5064/api/Properties', {
       method: 'POST',
       headers: {

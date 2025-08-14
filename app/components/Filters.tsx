@@ -18,14 +18,12 @@ export default function Filters({ onSearch }: FiltersProps) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Filtrar valores vacíos antes de enviar
+
     const filteredData: PropertyFilters = {};
     if (localFilters.name?.trim()) filteredData.name = localFilters.name.trim();
     if (localFilters.address?.trim()) filteredData.address = localFilters.address.trim();
     if (localFilters.priceMin !== undefined && localFilters.priceMin > 0) filteredData.priceMin = localFilters.priceMin;
     if (localFilters.priceMax !== undefined && localFilters.priceMax > 0) filteredData.priceMax = localFilters.priceMax;
-    
     onSearch(filteredData);
   };
 
@@ -50,7 +48,7 @@ export default function Filters({ onSearch }: FiltersProps) {
           </h2>
         </div>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Name Input */}

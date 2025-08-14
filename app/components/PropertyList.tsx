@@ -12,28 +12,27 @@ interface PropertyListProps {
   error: string | null;
 }
 
-// Componente SkeletonCard para mostrar durante la carga
 function SkeletonCard() {
   return (
     <div className="bg-white rounded-3xl shadow-lg overflow-hidden animate-pulse border border-gray-100">
       {/* Skeleton Image */}
       <div className="w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[shimmer_2s_infinite]" 
-           style={{ aspectRatio: '16/9' }}>
+            style={{ aspectRatio: '16/9' }}>
         <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
           <svg className="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
           </svg>
         </div>
       </div>
-      
+
       {/* Skeleton Content */}
       <div className="p-6">
         {/* Skeleton Title */}
         <div className="h-7 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-2xl mb-4 w-4/5"></div>
-        
+
         {/* Skeleton Address */}
         <div className="h-5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-xl mb-6 w-3/4"></div>
-        
+
         {/* Skeleton Cards Grid */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="bg-gradient-to-r from-gray-100 to-gray-200 p-3 rounded-xl">
@@ -75,10 +74,8 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     async function loadImages() {
       if (!Array.isArray(properties)) return;
       const imagesMap: Record<string, string[]> = {};
-      
       await Promise.all(properties.map(async (property) => {
         try {
-          // Usar el ID real de la propiedad en lugar de mapeo hardcodeado
           if (property.id) {
             const images = await fetchPropertyImages(property.id);
             if (images && images.length > 0) {
@@ -100,7 +97,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     setSelectedPropertyDetails(null);
 
     try {
-      // Usar el id de la propiedad directamente
       const propertyId = property.id;
       if (propertyId) {
         const details = await fetchPropertyDetails(property, propertyId);
@@ -125,7 +121,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
   const handlePropertyDetailsUpdate = (updatedDetails: PropertyDetails) => {
     setSelectedPropertyDetails(updatedDetails);
   };
-  // Estado de carga
   if (isLoading) {
     return (
       <div className="space-y-10">
@@ -133,13 +128,11 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
           <div className="h-10 bg-gradient-to-r from-gray-300 to-gray-200 rounded-2xl w-80 animate-pulse"></div>
           <div className="h-8 bg-gradient-to-r from-gray-300 to-gray-200 rounded-xl w-40 animate-pulse"></div>
         </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
           {Array.from({ length: 8 }).map((_, index) => (
             <SkeletonCard key={index} />
           ))}
         </div>
-        
         <div className="text-center">
           <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-3"></div>
@@ -150,7 +143,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     );
   }
 
-  // Estado de error
   if (error) {
     return (
       <div className="max-w-2xl mx-auto">
@@ -177,7 +169,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     );
   }
 
-  // No hay propiedades
   if (!Array.isArray(properties) || properties.length === 0) {
     return (
       <div className="max-w-2xl mx-auto">
@@ -204,7 +195,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
     );
   }
 
-  // Renderizar propiedades
   return (
     <div className="space-y-10">
       {/* Header con contador y estadísticas */}
@@ -221,7 +211,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
               Resultados de tu búsqueda personalizada
             </p>
           </div>
-          
           <div className="flex items-center space-x-4">
             <div className="bg-gradient-to-r from-green-100 to-emerald-100 px-4 py-2 rounded-xl border border-green-200">
               <span className="text-green-700 font-semibold text-sm">✓ Verificadas</span>
@@ -232,12 +221,11 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
           </div>
         </div>
       </div>
-      
       {/* Grid de propiedades mejorado */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
         {properties.map((property, index) => (
           <div key={property.codeInternal + '-' + property.name} 
-               className="transform transition-all duration-300 hover:scale-[1.02]"
+                className="transform transition-all duration-300 hover:scale-[1.02]"
                style={{ animationDelay: `${index * 100}ms` }}>
             <PropertyCard
               property={property}
@@ -262,7 +250,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
           </button>
         </div>
       </div>
-      
       {/* Modal de detalles */}
       <PropertyDetailModal
         isOpen={isModalOpen}

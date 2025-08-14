@@ -32,7 +32,6 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        
         {/* Badge de imágenes adicionales */}
         {imageUrls && imageUrls.length > 1 && (
           <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg">
@@ -67,7 +66,6 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
             <div className="text-xs text-blue-600 font-semibold uppercase tracking-wide">Código</div>
             <div className="text-sm font-bold text-blue-800">{property.codeInternal}</div>
           </div>
-          
           {property.year && (
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 rounded-xl border border-purple-100">
               <div className="text-xs text-purple-600 font-semibold uppercase tracking-wide">Año</div>
@@ -92,7 +90,7 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
         </div>
 
         {/* Botón de acción */}
-        <button 
+        <button
           onClick={() => onViewDetails(property)}
           className={`${buttonStyles.primary} w-full`}
         >

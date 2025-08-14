@@ -5,26 +5,24 @@ import PropertyList from './components/PropertyList';
 import CreatePropertyModal from './components/CreatePropertyModal';
 import { useProperties } from './hooks/useProperties';
 import { useState, useEffect } from 'react';
-import { buttonStyles, containerStyles, headerStyles } from '@/app/lib/styles';
+import { buttonStyles, containerStyles } from '@/app/lib/styles';
 
 export default function Home() {
   const { properties, totalCount, isLoading, error, filters, handleSearch, handlePageChange } = useProperties();
   const [isCreatePropertyOpen, setIsCreatePropertyOpen] = useState(false);
     const [owners, setOwners] = useState<Array<{ id: number; name: string; address: string; photo?: string }>>([]);
 
-  // Cargar owners al montar el componente
   useEffect(() => {
     const fetchOwners = async () => {
       try {
         const response = await fetch('/api/owners');
         if (response.ok) {
           const ownersData = await response.json();
-          // Validar que ownersData sea un array y tenga elementos válidos
           if (Array.isArray(ownersData)) {
-            const validOwners = ownersData.filter(owner => 
-              owner && 
+            const validOwners = ownersData.filter(owner =>
+              owner &&
               typeof owner.id === 'number' &&
-              typeof owner.name === 'string' && 
+              typeof owner.name === 'string' &&
               owner.name.trim() !== ''
             );
             setOwners(validOwners);
@@ -45,7 +43,6 @@ export default function Home() {
   }, []);
 
   const handlePropertyCreated = () => {
-    // Recargar las propiedades
     window.location.reload();
   };
 
@@ -65,7 +62,6 @@ export default function Home() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
             Descubre propiedades exclusivas en las mejores ubicaciones. Tu nuevo hogar te está esperando.
           </p>
-          
           {/* Botón para crear propiedad */}
           <button
             onClick={() => setIsCreatePropertyOpen(true)}
@@ -79,12 +75,11 @@ export default function Home() {
             </div>
           </button>
         </div>
-        
         <Filters onSearch={handleSearch} />
-        <PropertyList 
-          properties={properties} 
-          isLoading={isLoading} 
-          error={error} 
+        <PropertyList
+          properties={properties}
+          isLoading={isLoading}
+          error={error}
         />
         {totalCount > (filters.pageSize || 10) && (
           <div className="flex justify-center mt-12">
@@ -102,13 +97,11 @@ export default function Home() {
                     Anterior
                   </div>
                 </button>
-                
                 <div className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
                   <span className="text-sm text-gray-600 mr-2">Página</span>
                   <span className="text-xl font-bold text-blue-600">{filters.page || 1}</span>
                   <span className="text-sm text-gray-600 ml-2">de {Math.ceil(totalCount / (filters.pageSize || 10))}</span>
                 </div>
-                
                 <button
                   className={buttonStyles.secondary}
                   onClick={() => handlePageChange((filters.page || 1) + 1)}
@@ -122,7 +115,6 @@ export default function Home() {
                   </div>
                 </button>
               </div>
-              
               {/* Información adicional */}
               <div className="mt-4 text-center">
                 <span className="text-sm text-gray-600">
@@ -133,7 +125,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      
       {/* Footer profesional */}
       <footer className="bg-gradient-to-r from-gray-900 via-slate-800 to-gray-900 text-white mt-20">
         <div className="container mx-auto px-4 py-16">
@@ -175,7 +166,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
             {/* Enlaces rápidos */}
             <div>
               <h4 className="text-lg font-semibold mb-6 text-blue-300">Enlaces Rápidos</h4>
@@ -187,7 +177,6 @@ export default function Home() {
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">📞 Contacto</a></li>
               </ul>
             </div>
-            
             {/* Información de contacto */}
             <div>
               <h4 className="text-lg font-semibold mb-6 text-blue-300">Contacto</h4>
@@ -220,7 +209,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
           {/* Línea divisoria y copyright */}
           <div className="border-t border-gray-700 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
@@ -236,7 +224,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      
       {/* Modal para crear propiedades */}
       <CreatePropertyModal
         isOpen={isCreatePropertyOpen}
