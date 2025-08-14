@@ -1,26 +1,221 @@
 @import "tailwindcss";
 
+/* Variables globales para el sistema de diseño */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  
+  /* Colores del sistema */
+    --primary-blue: #2563eb;
+    --primary-indigo: #4f46e5;
+    --border-color: #d1d5db;
+    --border-hover: #9ca3af;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-placeholder: #9ca3af;
+  
+    /* Sombras estándar */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+    /* Espaciado estándar */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+  
+    /* Radio de bordes estándar */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Estilos base para formularios */
+  .form-input {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    background: white;
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .form-input:hover {
+    border-color: var(--border-hover);
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+/* Estilos base para botones */
+.btn-primary {
+  background: linear-gradient(to right, var(--primary-blue), var(--primary-indigo));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow-lg);
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(to right, #1d4ed8, #4338ca);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+  border-color: var(--border-hover);
+}
+
+/* Estilos base para contenedores */
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+}
+
+/* Mejora para dispositivos touch */
+@media (hover: none) {
+  .property-card:hover {
+    transform: none;
+  }
+}
+
+/* Animación de entrada para las cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Mejoras para el backdrop blur */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+/* Estilos para el modal */
+.modal-overlay {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Animación para el modal */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-enter {
+  animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+/* Mejora para la tabla responsive */
+@media (max-width: 768px) {
+  .traces-table {
+    font-size: 0.875rem;
+  }
+
+  .traces-table th,
+  .traces-table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* Estilos para la galería de imágenes */
+.image-gallery {
+  scroll-behavior: smooth;
+}
+
+.image-gallery::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-gallery::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.image-gallery::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  border-radius: 3px;
+}
+
+/* Efecto hover para las tarjetas de información */
+.info-card {
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
