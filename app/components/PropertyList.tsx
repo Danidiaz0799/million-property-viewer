@@ -15,7 +15,6 @@ interface PropertyListProps {
 function SkeletonCard() {
   return (
     <div className="bg-white rounded-3xl shadow-lg overflow-hidden animate-pulse border border-gray-100">
-      {/* Skeleton Image */}
       <div className="w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[shimmer_2s_infinite]" 
             style={{ aspectRatio: '16/9' }}>
         <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
@@ -25,15 +24,11 @@ function SkeletonCard() {
         </div>
       </div>
 
-      {/* Skeleton Content */}
       <div className="p-6">
-        {/* Skeleton Title */}
         <div className="h-7 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-2xl mb-4 w-4/5"></div>
 
-        {/* Skeleton Address */}
         <div className="h-5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-xl mb-6 w-3/4"></div>
 
-        {/* Skeleton Cards Grid */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="bg-gradient-to-r from-gray-100 to-gray-200 p-3 rounded-xl">
             <div className="h-3 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded mb-2 w-12"></div>
@@ -45,7 +40,6 @@ function SkeletonCard() {
           </div>
         </div>
 
-        {/* Skeleton Owner Info */}
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 p-4 rounded-xl mb-4">
           <div className="flex items-center">
             <div className="w-8 h-8 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full mr-3"></div>
@@ -56,7 +50,6 @@ function SkeletonCard() {
           </div>
         </div>
 
-        {/* Skeleton Button */}
         <div className="h-14 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-2xl"></div>
       </div>
     </div>
@@ -202,8 +195,8 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
           <div>
             <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
-              {Array.isArray(properties) && properties.length === 0 
-                ? 'No se encontraron propiedades' 
+              {Array.isArray(properties) && properties.length === 0
+                ? 'No se encontraron propiedades'
                 : `${Array.isArray(properties) ? properties.length : 0} ${Array.isArray(properties) && properties.length === 1 ? 'Propiedad Encontrada' : 'Propiedades Encontradas'}`
               }
             </h2>
@@ -221,10 +214,9 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
           </div>
         </div>
       </div>
-      {/* Grid de propiedades mejorado */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
         {properties.map((property, index) => (
-          <div key={property.codeInternal + '-' + property.name} 
+          <div key={property.codeInternal + '-' + property.name}
                 className="transform transition-all duration-300 hover:scale-[1.02]"
                style={{ animationDelay: `${index * 100}ms` }}>
             <PropertyCard
@@ -236,20 +228,6 @@ export default function PropertyList({ properties, isLoading, error }: PropertyL
         ))}
       </div>
 
-      {/* Información adicional */}
-      <div className="bg-gradient-to-r from-slate-100 to-gray-100 rounded-3xl p-8 text-center border border-gray-200">
-        <div className="max-w-2xl mx-auto">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            🏆 ¿Necesitas más opciones?
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Nuestro equipo de expertos puede ayudarte a encontrar propiedades exclusivas que no están listadas públicamente.
-          </p>
-          <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
-            Contactar Asesor Especializado
-          </button>
-        </div>
-      </div>
       {/* Modal de detalles */}
       <PropertyDetailModal
         isOpen={isModalOpen}

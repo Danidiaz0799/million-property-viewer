@@ -10,13 +10,11 @@ export function useProperties() {
   const [filters, setFilters] = useState<PropertyFilters>({ page: 1, pageSize: 10 });
 
   const handleSearch = (newFilters: PropertyFilters) => {
-    // Si vienen filtros vacíos, volvemos al estado base (como carga inicial)
     const hasKeys = Object.keys(newFilters || {}).length > 0;
     if (!hasKeys) {
       setFilters({ page: 1, pageSize: 10 });
       return;
     }
-    // Si hay filtros, partimos del estado base para no arrastrar filtros antiguos
     setFilters({ page: 1, pageSize: 10, ...newFilters });
   };
 

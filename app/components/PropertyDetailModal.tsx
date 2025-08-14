@@ -72,15 +72,12 @@ export default function PropertyDetailModal({
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">
-        {/* Backdrop */}
         <div
             className="fixed inset-0 bg-black/60 modal-overlay transition-opacity duration-300"
             onClick={onClose}
         />
-        {/* Modal */}
         <div className="flex min-h-full items-center justify-center p-4">
             <div className="relative bg-white rounded-3xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden modal-enter">
-            {/* Header */}
             <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 z-10">
                 <div className="flex items-center justify-between">
                 <div>
@@ -102,7 +99,6 @@ export default function PropertyDetailModal({
                 </div>
             </div>
 
-            {/* Content */}
             <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
                 {isLoading ? (
                 <div className="p-8 text-center">
@@ -111,7 +107,6 @@ export default function PropertyDetailModal({
                 </div>
                 ) : propertyDetails ? (
                 <div className="p-6 space-y-8">
-                    {/* Images Gallery */}
                     {images.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-2xl font-bold text-gray-800 flex items-center">
@@ -120,7 +115,6 @@ export default function PropertyDetailModal({
                         </svg>
                         Galería de Imágenes
                         </h3>
-                        {/* Main Image */}
                         <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-lg">
                         <Image
                             src={currentImage?.file || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80'}
@@ -129,7 +123,6 @@ export default function PropertyDetailModal({
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
                             className="object-cover"
                         />
-                        {/* Navigation arrows */}
                         {images.length > 1 && (
                             <>
                             <button
@@ -150,12 +143,10 @@ export default function PropertyDetailModal({
                             </button>
                             </>
                         )}
-                        {/* Image counter */}
                         <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
                             {currentImageIndex + 1} / {images.length}
                         </div>
                         </div>
-                        {/* Thumbnail gallery */}
                         {images.length > 1 && (
                         <div className="flex space-x-2 overflow-x-auto pb-2 image-gallery">
                             {images.map((image, index) => (
@@ -180,9 +171,7 @@ export default function PropertyDetailModal({
                     </div>
                     )}
 
-                    {/* Property Details Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Property Information */}
                     <div className="space-y-6">
                         <h3 className="text-2xl font-bold text-gray-800 flex items-center">
                         <svg className="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +203,6 @@ export default function PropertyDetailModal({
                         </div>
                     </div>
 
-                    {/* Owner Information */}
                     <div className="space-y-6">
                         <h3 className="text-2xl font-bold text-gray-800 flex items-center">
                         <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,7 +250,6 @@ export default function PropertyDetailModal({
                     </div>
                     </div>
 
-                    {/* Property Traces */}
                     <div className="space-y-6">
                     <div className="flex justify-between items-center">
                         <h3 className="text-2xl font-bold text-gray-800 flex items-center">
@@ -338,7 +325,6 @@ export default function PropertyDetailModal({
             </div>
             </div>
         </div>
-        {/* Modal para crear transacciones */}
         {propertyDetails && (
             <CreateTransactionModal
             isOpen={isCreateTransactionOpen}

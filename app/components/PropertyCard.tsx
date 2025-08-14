@@ -23,7 +23,6 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
 
   return (
     <div className={`${containerStyles.card} rounded-2xl hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border-2 hover:border-blue-200`}>
-      {/* Imagen */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
         <Image
           src={firstImage}
@@ -32,22 +31,18 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        {/* Badge de imágenes adicionales */}
         {imageUrls && imageUrls.length > 1 && (
           <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg">
             📸 +{imageUrls.length - 1} fotos
           </div>
         )}
 
-        {/* Badge de precio destacado */}
         <div className="absolute top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
           {formatPrice(property.price)}
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-6">
-        {/* Título y ubicación */}
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
             {property.name}
@@ -89,7 +84,6 @@ export default function PropertyCard({ property, imageUrls, onViewDetails }: Pro
           </div>
         </div>
 
-        {/* Botón de acción */}
         <button
           onClick={() => onViewDetails(property)}
           className={`${buttonStyles.primary} w-full`}

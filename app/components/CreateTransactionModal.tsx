@@ -65,7 +65,6 @@ export default function CreateTransactionModal({
             throw new Error('Error al crear la transacción');
         }
 
-        // Reset form
         setFormData({
             dateSale: new Date().toISOString().split('T')[0],
             name: '',
@@ -95,7 +94,6 @@ export default function CreateTransactionModal({
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full">
-            {/* Header */}
             <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-t-3xl">
             <div className="flex justify-between items-center">
                 <div>
@@ -113,7 +111,6 @@ export default function CreateTransactionModal({
             </div>
             </div>
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
@@ -193,7 +190,6 @@ export default function CreateTransactionModal({
                 </div>
             </div>
 
-            {/* Summary */}
             {formData.value > 0 && (
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                 <h4 className="font-bold text-green-800 mb-2">📊 Resumen de Transacción</h4>
@@ -216,7 +212,6 @@ export default function CreateTransactionModal({
                 </div>
             )}
 
-            {/* Buttons */}
             <div className="flex space-x-4 pt-4">
                 <button
                 type="button"

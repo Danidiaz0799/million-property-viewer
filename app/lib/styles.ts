@@ -1,5 +1,3 @@
-// Sistema de Diseño Centralizado - Estilos Estándar
-
 // INPUTS Y FORMULARIOS
 export const inputStyles = {
     base: "w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-400 shadow-sm transition-all duration-200 hover:border-gray-400 font-medium",
